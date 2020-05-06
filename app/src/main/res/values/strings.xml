@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">TodoNote</string>
+    <string name="add_new">Add New Note</string>
+    <string name="title">Title</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+</resources>

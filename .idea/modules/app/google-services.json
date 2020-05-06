@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "867735380891",
+    "firebase_url": "https://todonote-76c59.firebaseio.com",
+    "project_id": "todonote-76c59",
+    "storage_bucket": "todonote-76c59.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:867735380891:android:c3c6aa2fc72c87442a373e",
+        "android_client_info": {
+          "package_name": "com.jkstudio.todonote"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "867735380891-1bggj0rlotf7s8q1j09tgqfupjtn2bri.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.jkstudio.todonote",
+            "certificate_hash": "f13f49d4c029d7a7b2a4704277f187ce8c467cb6"
+          }
+        },
+        {
+          "client_id": "867735380891-snu6tbp5ob6333vdt5ej001al8pnq6pj.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwRIIiFV4wOcW9TQZMneP12E6dWX0zbjI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "867735380891-snu6tbp5ob6333vdt5ej001al8pnq6pj.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -42,7 +42,7 @@ public class NoteAdapter extends RecyclerView.Adapter<NoteAdapter.NoteViewHolder
         return mTodoNoteList.size();
     }
 
-    public class NoteViewHolder extends RecyclerView.ViewHolder {
+    public static class NoteViewHolder extends RecyclerView.ViewHolder {
 
         private TextView titleTV, detailTV, dateTV;
 

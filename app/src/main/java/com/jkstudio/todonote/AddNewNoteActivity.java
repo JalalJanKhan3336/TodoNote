@@ -3,6 +3,8 @@ package com.jkstudio.todonote;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.ProgressDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.Menu;
@@ -11,11 +13,14 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.google.android.material.textfield.TextInputLayout;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
 
 import java.util.UUID;
 
 public class AddNewNoteActivity extends AppCompatActivity {
 
+    private ProgressDialog mProgressDialog;
     private EditText mTitle_ET, mDetail_ET;
 
     @Override
@@ -24,6 +29,12 @@ public class AddNewNoteActivity extends AppCompatActivity {
         setContentView(R.layout.activity_add_new_note);
 
         initView();
+        initRef();
+    }
+
+    private void initRef() {
+        mProgressDialog = new ProgressDialog(this);
+        mProgressDialog.setCancelable(false);
     }
 
     private void initView() {
@@ -51,6 +62,8 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
             if(isEmpty(mTitle_ET, mDetail_ET) == false){
                 // Save Note to Database
+                mProgressDialog.setMessage("Saving note... please wait.");
+                mProgressDialog.show();
                 TodoNote note = new TodoNote(id, title, detail);
                 saveToDatabase(note);
             }
@@ -67,19 +80,33 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
     // Saves Given Note to Database
     private void saveToDatabase(TodoNote note) {
-        Database database = Database.getInstance();
 
-        database.addNote(note, new DatabaseAdditionCallback() {
-            @Override
-            public void onAdditionSuccess(String msg) {
-                Toast.makeText(AddNewNoteActivity.this, msg, Toast.LENGTH_SHORT).show();
-            }
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
 
-            @Override
-            public void onAdditionFailure(String error) {
-                Toast.makeText(AddNewNoteActivity.this, error, Toast.LENGTH_SHORT).show();
-            }
-        });
+        if(user != null){ // user is logged in
+            String userId = user.getUid();
+
+            Database database = Database.getInstance();
+            database.addNote(userId, note, new DatabaseAdditionCallback() {
+                @Override
+                public void onAdditionSuccess(String msg) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(AddNewNoteActivity.this, msg, Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onAdditionFailure(String error) {
+                    mProgressDialog.dismiss();
+                    Toast.makeText(AddNewNoteActivity.this, error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else { // User is not logged in
+            Intent intent = new Intent(AddNewNoteActivity.this, SplashScreenActivity.class);
+            startActivity(intent);
+            finish();
+        }
+
     }
 
     private boolean isEmpty(EditText et1, EditText et2) {

@@ -11,6 +11,9 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.auth.FirebaseUser;
+import com.google.firebase.firestore.DocumentSnapshot;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,7 +35,12 @@ public class MainActivity extends AppCompatActivity {
         initView();
         initRef();
         click();
-        generateList();
+    }
+
+    @Override
+    protected void onStart() {
+        super.onStart();
+        fetchAllNotes();
     }
 
     private void initRef() {
@@ -40,18 +48,46 @@ public class MainActivity extends AppCompatActivity {
         mDatabase = Database.getInstance();
     }
 
-    private void generateList() {
-        mList.clear();
+    private void fetchAllNotes() {
 
-        for(int i = 0; i < 20; i++){
-            String title = "Note Title "+i;
-            String detail = "Note Detail "+i;
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+        FirebaseUser user = auth.getCurrentUser();
 
-            TodoNote note = new TodoNote(null,title, detail);
-            mList.add(note);
+        if(user != null){ // User is logged in
+            String userId = user.getUid();
+
+            mDatabase.fetchAllNotes(userId, new DatabaseAllNotesFetchCallback() {
+                @Override
+                public void onAllNotesFetchedSuccess(List<DocumentSnapshot> notesDocumentsList, String msg) {
+                    if(notesDocumentsList != null){
+
+                        Toast.makeText(MainActivity.this, msg, Toast.LENGTH_SHORT).show();
+                        mList.clear();
+
+                        for(int i = 0; i < notesDocumentsList.size(); i++){
+                            DocumentSnapshot ds = notesDocumentsList.get(i);
+                            TodoNote note = ds.toObject(TodoNote.class);
+
+                            if(note != null){
+                                mList.add(note);
+                            }
+
+                        }// for loop ends here
+                    }
+
+                    setUpRecyclerView();
+                }
+
+                @Override
+                public void onAllNotesFetchedFailure(String error) {
+                    Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else {  // User is not logged in
+            Intent intent = new Intent(MainActivity.this, SplashScreenActivity.class);
+            startActivity(intent);
+            finish();
         }
-
-        setUpRecyclerView();
     }
 
     private void setUpRecyclerView() {

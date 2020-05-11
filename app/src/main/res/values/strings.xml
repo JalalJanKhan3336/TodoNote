@@ -4,4 +4,7 @@
     <string name="title">Title</string>
     <string name="save">Save</string>
     <string name="cancel">Cancel</string>
+    <string name="detail">Detail</string>
+    <string name="about_todo_note">Welcome to Todo Note App. Click below button to continue</string>
+    <string name="conti">Continue</string>
 </resources>

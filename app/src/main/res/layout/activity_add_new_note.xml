@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:padding="@dimen/_16sdp"
     android:orientation="vertical"
-    tools:context=".AddNewNoteActivity">
+    tools:context=".activity.AddNewNoteActivity">
 
     <com.google.android.material.textfield.TextInputLayout
         android:id="@+id/title_til"

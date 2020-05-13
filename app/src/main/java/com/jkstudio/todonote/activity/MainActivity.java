@@ -1,4 +1,4 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.activity;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -6,7 +6,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.provider.ContactsContract;
 import android.view.View;
 import android.widget.Toast;
 
@@ -14,11 +13,18 @@ import com.google.android.material.floatingactionbutton.ExtendedFloatingActionBu
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
+import com.jkstudio.todonote.callback.ItemActionCallback;
+import com.jkstudio.todonote.database.Database;
+import com.jkstudio.todonote.callback.DatabaseAllNotesFetchCallback;
+import com.jkstudio.todonote.adapter.NoteAdapter;
+import com.jkstudio.todonote.R;
+import com.jkstudio.todonote.dialog.ViewNoteDialogFragment;
+import com.jkstudio.todonote.model.TodoNote;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements ItemActionCallback {
 
     private ExtendedFloatingActionButton mAddNewNoteButton;
     private RecyclerView mRecyclerView;
@@ -26,6 +32,8 @@ public class MainActivity extends AppCompatActivity {
     private List<TodoNote> mList;
     private NoteAdapter mAdapter;
     private Database mDatabase;
+
+    private ViewNoteDialogFragment mViewNoteDialogFragment;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,6 +54,7 @@ public class MainActivity extends AppCompatActivity {
     private void initRef() {
         mList = new ArrayList<>();
         mDatabase = Database.getInstance();
+        mViewNoteDialogFragment = new ViewNoteDialogFragment();
     }
 
     private void fetchAllNotes() {
@@ -92,7 +101,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void setUpRecyclerView() {
 
-        mAdapter = new NoteAdapter(this, mList);
+        mAdapter = new NoteAdapter(this, mList, this);
 
         LinearLayoutManager layout = new LinearLayoutManager(this);
         mRecyclerView.setLayoutManager(layout);
@@ -114,4 +123,26 @@ public class MainActivity extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    public void onNoteView(TodoNote note, int position) {
+
+        Bundle bundle = new Bundle();
+
+        bundle.putSerializable("note_key", note);
+
+        mViewNoteDialogFragment.setArguments(bundle);
+        mViewNoteDialogFragment.show(getSupportFragmentManager(), mViewNoteDialogFragment.getTag());
+    }
+
+    @Override
+    public void onNoteEdit(TodoNote note, int position) {
+
+    }
+
+    @Override
+    public void onNoteDelete(TodoNote note, int position) {
+
+    }
+
 }

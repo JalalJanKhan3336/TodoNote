@@ -3,9 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_margin="8dp">
 
-    <LinearLayout
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
@@ -15,10 +16,14 @@
             android:id="@+id/title_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
             android:text="@string/app_name"
+            android:textColor="@android:color/black"
+            android:textSize="@dimen/_12ssp"
             android:textStyle="bold"
-            android:textSize="13sp"
-            android:textColor="@android:color/black"/>
+            app:layout_constraintBottom_toTopOf="@id/detail_tv"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/detail_tv"
@@ -27,19 +32,47 @@
             android:text="@string/app_name"
             android:layout_marginTop="8dp"
             android:textStyle="normal"
-            android:textSize="11sp"
-            android:textColor="@android:color/black"/>
+            android:textSize="@dimen/_11ssp"
+            android:maxLines="1"
+            android:ems="7"
+            android:ellipsize="end"
+            android:textColor="@android:color/black"
+            app:layout_constraintBottom_toTopOf="@id/edit_iv"
+            app:layout_constraintTop_toBottomOf="@id/title_tv"
+            app:layout_constraintStart_toStartOf="@id/title_tv"/>
 
         <TextView
             android:id="@+id/date_tv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="@string/app_name"
+            android:text="@string/dummy_date"
             android:textStyle="normal"
-            android:textSize="11sp"
+            android:textSize="@dimen/_10ssp"
             android:layout_gravity="end"
-            android:textColor="@android:color/black"/>
+            android:textColor="@android:color/black"
+            app:layout_constraintTop_toTopOf="@id/title_tv"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintBottom_toBottomOf="@id/title_tv"/>
 
-    </LinearLayout>
+        <ImageView
+            android:id="@+id/edit_iv"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_edit"
+            android:layout_marginEnd="@dimen/_10sdp"
+            app:layout_constraintTop_toTopOf="@id/delete_iv"
+            app:layout_constraintBottom_toBottomOf="@id/delete_iv"
+            app:layout_constraintEnd_toStartOf="@id/delete_iv"/>
+
+        <ImageView
+            android:id="@+id/delete_iv"
+            android:layout_width="@dimen/_20sdp"
+            android:layout_height="@dimen/_20sdp"
+            android:src="@drawable/ic_delete"
+            app:layout_constraintTop_toBottomOf="@id/detail_tv"
+            app:layout_constraintEnd_toEndOf="@id/date_tv"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
 </androidx.cardview.widget.CardView>

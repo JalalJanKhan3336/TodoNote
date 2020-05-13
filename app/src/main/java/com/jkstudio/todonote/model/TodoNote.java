@@ -1,7 +1,9 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.model;
 
 
-public class TodoNote {
+import java.io.Serializable;
+
+public class TodoNote implements Serializable {
 
     private String id, title, detail, date;
 

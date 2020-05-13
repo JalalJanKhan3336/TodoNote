@@ -1,4 +1,4 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.callback;
 
 import com.google.firebase.firestore.DocumentSnapshot;
 

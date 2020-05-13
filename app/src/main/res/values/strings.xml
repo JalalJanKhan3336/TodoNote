@@ -7,4 +7,7 @@
     <string name="detail">Detail</string>
     <string name="about_todo_note">Welcome to Todo Note App. Click below button to continue</string>
     <string name="conti">Continue</string>
+    <string name="dummy_date">5/13/2020</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

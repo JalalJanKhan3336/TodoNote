@@ -1,4 +1,4 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.callback;
 
 public interface DatabaseAdditionCallback {
     void onAdditionSuccess(String msg);

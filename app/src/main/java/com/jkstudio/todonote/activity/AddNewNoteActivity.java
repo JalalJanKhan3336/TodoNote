@@ -1,4 +1,4 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -15,6 +15,10 @@ import android.widget.Toast;
 import com.google.android.material.textfield.TextInputLayout;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jkstudio.todonote.database.Database;
+import com.jkstudio.todonote.callback.DatabaseAdditionCallback;
+import com.jkstudio.todonote.R;
+import com.jkstudio.todonote.model.TodoNote;
 
 import java.util.UUID;
 

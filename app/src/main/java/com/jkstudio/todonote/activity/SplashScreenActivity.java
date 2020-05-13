@@ -1,4 +1,4 @@
-package com.jkstudio.todonote;
+package com.jkstudio.todonote.activity;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -14,6 +14,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.jkstudio.todonote.R;
 
 public class SplashScreenActivity extends AppCompatActivity {
 

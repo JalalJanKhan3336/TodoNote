@@ -10,6 +10,7 @@ import android.view.View;
 import android.widget.Toast;
 
 import com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
@@ -26,7 +27,7 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements ItemActionCallback {
 
-    private ExtendedFloatingActionButton mAddNewNoteButton;
+    private FloatingActionButton mAddNewNoteButton;
     private RecyclerView mRecyclerView;
 
     private List<TodoNote> mList;
@@ -92,6 +93,7 @@ public class MainActivity extends AppCompatActivity implements ItemActionCallbac
                     Toast.makeText(MainActivity.this, error, Toast.LENGTH_SHORT).show();
                 }
             });
+
         }else {  // User is not logged in
             Intent intent = new Intent(MainActivity.this, SplashScreenActivity.class);
             startActivity(intent);
@@ -128,7 +130,6 @@ public class MainActivity extends AppCompatActivity implements ItemActionCallbac
     public void onNoteView(TodoNote note, int position) {
 
         Bundle bundle = new Bundle();
-
         bundle.putSerializable("note_key", note);
 
         mViewNoteDialogFragment.setArguments(bundle);

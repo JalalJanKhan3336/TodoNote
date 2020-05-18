@@ -17,11 +17,11 @@
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent"/>
 
-    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_new_note_btn"
-        android:layout_width="@dimen/_160sdp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:icon="@drawable/ic_edit"
+        android:src="@drawable/ic_edit"
         android:text="@string/add_new"
         android:textAllCaps="false"
         android:textSize="@dimen/_12ssp"

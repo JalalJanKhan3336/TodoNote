@@ -10,6 +10,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.jkstudio.todonote.activity.MainActivity;
 import com.jkstudio.todonote.callback.DatabaseAdditionCallback;
 import com.jkstudio.todonote.callback.DatabaseAllNotesFetchCallback;
 import com.jkstudio.todonote.model.TodoNote;

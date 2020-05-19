@@ -26,6 +26,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
     private ProgressDialog mProgressDialog;
     private EditText mTitle_ET, mDetail_ET;
+    private TodoNote note;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,6 +35,17 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
         initView();
         initRef();
+
+        if(getIntent() != null){
+            note = (TodoNote) getIntent().getSerializableExtra("note");
+
+            if(note != null){
+                mTitle_ET.setText(note.getTitle());
+                mDetail_ET.setText(note.getDetail());
+            }
+
+        }
+
     }
 
     private void initRef() {
@@ -60,15 +72,26 @@ public class AddNewNoteActivity extends AppCompatActivity {
 
         if(item.getItemId() == R.id.action_save){ // Save Option is Clicked
 
-            String id = UUID.randomUUID().toString();
-            String title = mTitle_ET.getText().toString().trim();
-            String detail = mDetail_ET.getText().toString().trim();
-
             if(isEmpty(mTitle_ET, mDetail_ET) == false){
+
+                String id = UUID.randomUUID().toString();
+                String title = mTitle_ET.getText().toString().trim();
+                String detail = mDetail_ET.getText().toString().trim();
+
+                if(note != null){ // Edit existing note
+                    id = note.getId();
+                    note.setId(id);
+                    note.setTitle(title);
+                    note.setDetail(detail);
+
+                }else { // Add New Note
+                    note = new TodoNote(id,title,detail);
+                }
+
                 // Save Note to Database
                 mProgressDialog.setMessage("Saving note... please wait.");
                 mProgressDialog.show();
-                TodoNote note = new TodoNote(id, title, detail);
+
                 saveToDatabase(note);
             }
 
@@ -83,7 +106,7 @@ public class AddNewNoteActivity extends AppCompatActivity {
     }
 
     // Saves Given Note to Database
-    private void saveToDatabase(TodoNote note) {
+    private void saveToDatabase(TodoNote todoNote) {
 
         FirebaseAuth auth = FirebaseAuth.getInstance();
         FirebaseUser user = auth.getCurrentUser();
@@ -92,10 +115,13 @@ public class AddNewNoteActivity extends AppCompatActivity {
             String userId = user.getUid();
 
             Database database = Database.getInstance();
-            database.addNote(userId, note, new DatabaseAdditionCallback() {
+            database.addNote(userId, todoNote, new DatabaseAdditionCallback() {
                 @Override
                 public void onAdditionSuccess(String msg) {
                     mProgressDialog.dismiss();
+                    mTitle_ET.setText("");
+                    mDetail_ET.setText("");
+                    note = null;
                     Toast.makeText(AddNewNoteActivity.this, msg, Toast.LENGTH_SHORT).show();
                 }
 

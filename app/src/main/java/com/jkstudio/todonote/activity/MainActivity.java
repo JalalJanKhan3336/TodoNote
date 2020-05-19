@@ -1,9 +1,11 @@
 package com.jkstudio.todonote.activity;
 
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -15,6 +17,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.jkstudio.todonote.callback.ItemActionCallback;
+import com.jkstudio.todonote.callback.RemoveCallback;
 import com.jkstudio.todonote.database.Database;
 import com.jkstudio.todonote.callback.DatabaseAllNotesFetchCallback;
 import com.jkstudio.todonote.adapter.NoteAdapter;
@@ -138,12 +141,58 @@ public class MainActivity extends AppCompatActivity implements ItemActionCallbac
 
     @Override
     public void onNoteEdit(TodoNote note, int position) {
-
+        Intent intent = new Intent(MainActivity.this, AddNewNoteActivity.class);
+        intent.putExtra("note", note);
+        startActivity(intent);
     }
 
     @Override
     public void onNoteDelete(TodoNote note, int position) {
+        showAlertDialog(note, position);
+    }
 
+    private void showAlertDialog(final TodoNote note, final int position) {
+
+        String title = getResources().getString(R.string.confirm);
+        String msg = getResources().getString(R.string.delete_confirm_msg);
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle(title);
+        builder.setMessage(msg);
+
+        builder.setPositiveButton("Delete", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                FirebaseAuth auth = FirebaseAuth.getInstance();
+                FirebaseUser user = auth.getCurrentUser();
+
+                if(user != null){
+                    String userId = user.getUid();
+                    mDatabase.remove("Notes", userId, "UserNotes", note.getId(), new RemoveCallback() {
+                        @Override
+                        public void onRemovedSuccess(String msg) {
+                            mList.remove(note);
+                            mAdapter.notifyItemRemoved(position);
+                        }
+
+                        @Override
+                        public void onRemovedFailure(String error) {
+
+                        }
+                    });
+                }
+            }
+        });
+
+        builder.setNegativeButton("Close", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+
+        AlertDialog dialog = builder.create();
+        dialog.show();
     }
 
 }

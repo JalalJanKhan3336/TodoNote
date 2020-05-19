@@ -13,6 +13,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 import com.jkstudio.todonote.activity.MainActivity;
 import com.jkstudio.todonote.callback.DatabaseAdditionCallback;
 import com.jkstudio.todonote.callback.DatabaseAllNotesFetchCallback;
+import com.jkstudio.todonote.callback.RemoveCallback;
 import com.jkstudio.todonote.model.TodoNote;
 
 public class Database {
@@ -81,5 +82,46 @@ public class Database {
                     }
                 });
     }
+
+    public void remove(String collection, String document, final RemoveCallback listener){
+        mRootRef
+                .collection(collection)
+                .document(document)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        listener.onRemovedSuccess("Item Removed Successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onRemovedFailure(e.getMessage());
+                    }
+                });
+    }
+
+    public void remove(String collection, String document, String subCollection, String subDocument, final RemoveCallback listener){
+        mRootRef
+                .collection(collection)
+                .document(document)
+                .collection(subCollection)
+                .document(subDocument)
+                .delete()
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+                        listener.onRemovedSuccess("Item Removed Successfully");
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        listener.onRemovedFailure(e.getMessage());
+                    }
+                });
+    }
+
 
 }
